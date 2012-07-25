@@ -1,4 +1,4 @@
-homebrew-tomahawk
+homebrew-lastfmdesktop
 =================
 
-Homebrew recipes for Tomahawk
+Homebrew recipes for lastfm-desktop
