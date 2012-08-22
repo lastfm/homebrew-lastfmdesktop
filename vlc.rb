@@ -14,12 +14,6 @@ class Vlc < Formula
   depends_on 'libtool'
   depends_on 'flac'
 
-  def patches
-    if MacOS.xcode_version.to_f >= 4.3
-      'https://raw.github.com/gist/2915852/1bb32c300f6c0b1787f7ad396ec8d06596efb63a/vlc-buildsystem-fix-xcode-4.3'
-    end
-  end
-
   def install
     # Compiler
     cc =   "CC=/Developer/usr/bin/llvm-gcc-4.2"
@@ -52,15 +46,15 @@ class Vlc < Formula
       exp = "export #{path}; export #{aclocal}; export #{cc}; export #{cxx}; export #{objc}; export #{ldf}; export #{cfl}"
     end
 
-    if MacOS.mountain_lion?
-      darwinVer = "x86_64-apple-darwin10"
-    else
-      darwinVer = "x86_64-apple-darwin9"
-    end
+    darwinVer = "x86_64-apple-darwin10"
 
     # Additional Libs
+    # KLN 20/08/2012 Added 'make .ogg' and 'make .vorbis' in order to get this recipe to work on OSX 10.6
     system "#{exp}; cd contrib; mkdir -p osx; cd osx; ../bootstrap --host=#{darwinVer} --build=#{darwinVer}"
     system "#{exp}; cd contrib/osx; make prebuilt"
+    if MacOS.xcode_version.to_f <= 4.2
+      system "cd contrib/osx; make .ogg; make .vorbis"
+    end
 
     # HACK: This file is normally created by the build query git log, but homebrew appears
     # to remove the .git folder just create a blank file so that this step passes 
