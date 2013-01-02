@@ -65,4 +65,35 @@ class Vlc < Formula
     system "#{exp}; mkdir -p build; cd build; ../extras/package/macosx/configure.sh --disable-x264 --disable-ncurses --disable-asa --disable-macosx --disable-macosx-dialog-provider --with-macosx-sdk=#{sdk} --host=#{darwinVer} --build=#{darwinVer} --prefix=#{prefix}"
     system "#{exp}; cd build; make install"
   end
+  
+  def patches
+    DATA
+  end
 end
+
+__END__
+diff --git a/modules/audio_output/auhal.c b/modules/audio_output/auhal.c
+index 2a73ebf..07508c0 100644
+--- a/modules/audio_output/auhal.c
++++ b/modules/audio_output/auhal.c
+@@ -1443,17 +1443,17 @@ static OSStatus HardwareListener( AudioObjectID inObjectID,  UInt32 inNumberAddr
+         {
+             /* something changed in the list of devices */
+             /* We trigger the audio-device's aout_ChannelsRestart callback */
+-            msg_Warn( p_aout, "audio device configuration changed, resetting cache" );
++            //msg_Warn( p_aout, "audio device configuration changed, resetting cache" );
+             var_TriggerCallback( p_aout, "audio-device" );
+             var_Destroy( p_aout, "audio-device" );
+         }
+         else if( inAddresses[i].mSelector == kAudioDevicePropertyDeviceIsAlive )
+         {
+-            msg_Warn( p_aout, "audio device died, resetting aout" );
++            //msg_Warn( p_aout, "audio device died, resetting aout" );
+             var_TriggerCallback( p_aout, "audio-device" );
+             var_Destroy( p_aout, "audio-device" );
+         } else if (inAddresses[i].mSelector == kAudioStreamPropertyAvailablePhysicalFormats) {
+-            msg_Warn(p_aout, "available physical formats for audio device changed, resetting aout");
++            //msg_Warn(p_aout, "available physical formats for audio device changed, resetting aout");
+             var_TriggerCallback(p_aout, "audio-device");
+             var_Destroy(p_aout, "audio-device");
+         }
