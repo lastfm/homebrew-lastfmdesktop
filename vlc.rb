@@ -13,6 +13,7 @@ class Vlc < Formula
   depends_on 'libmad'
   depends_on 'libtool'
   depends_on 'flac'
+  depends_on 'pkg-config' => :build
 
   def install
     # Compiler
@@ -22,7 +23,7 @@ class Vlc < Formula
 
     # gettext is keg-only so make sure vlc finds it
     gettext = Formula.factory("gettext")
-    ldf = "LDFLAGS=-L#{gettext.lib} -lintl"
+    ldf = "LDFLAGS=\"-L#{gettext.lib} -lintl\""
     cfl = "CFLAGS=-I#{gettext.include}"
     print "Adding libintl directly to the environment: #{ENV['LDFLAGS']} and #{ENV['CFLAGS']}"
 
