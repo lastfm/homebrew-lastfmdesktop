@@ -97,3 +97,44 @@ index 2a73ebf..07508c0 100644
              var_TriggerCallback(p_aout, "audio-device");
              var_Destroy(p_aout, "audio-device");
          }
+diff --git a/src/modules/cache.c b/src/modules/cache.c
+index 779656a..a56fb5c 100644
+--- a/src/modules/cache.c
++++ b/src/modules/cache.c
+@@ -396,6 +396,8 @@ static int CacheSaveBank( FILE *file, const module_cache_t *, size_t );
+ void CacheSave (vlc_object_t *p_this, const char *dir,
+                module_cache_t *entries, size_t n)
+ {
++    return;
++
+     char *filename = NULL, *tmpname = NULL;
+ 
+     if (asprintf (&filename, "%s"DIR_SEP CACHE_NAME, dir ) == -1)
+@@ -445,6 +447,8 @@ static int CacheSaveSubmodule (FILE *, const module_t *);
+ static int CacheSaveBank (FILE *file, const module_cache_t *cache,
+                           size_t i_cache)
+ {
++    return 0;
++
+     uint32_t i_file_size = 0;
+ 
+     /* Contains version number */
+@@ -524,6 +528,8 @@ error:
+ 
+ static int CacheSaveSubmodule( FILE *file, const module_t *p_module )
+ {
++    return 0;
++
+     if( !p_module )
+         return 0;
+     if( CacheSaveSubmodule( file, p_module->next ) )
+@@ -546,6 +552,8 @@ error:
+ 
+ static int CacheSaveConfig (FILE *file, const module_t *p_module)
+ {
++    return 0;
++
+     uint32_t i_lines = p_module->confsize;
+ 
+     SAVE_IMMEDIATE( p_module->i_config_items );
+
